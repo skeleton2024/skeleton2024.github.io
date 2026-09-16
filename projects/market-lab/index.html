@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>市场里的规则与代价 · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>市场里的规则与代价</h1><p>市场研究专题</p><p>围绕市场机制与策略研究积累的一组项目：离线交易练习、机器学习因子、多因子选股、期货趋势策略，以及研究资料与公式管理。</p><p><a href="/project-notes/market-lab.md" download>下载项目介绍</a></p><h2>一个交易想法经过数据、成本和风险检查后，还剩下什么？</h2><p>这些项目从不同角度研究市场：离线 PWA 用于练习委托和成本，多因子与趋势研究围绕数据、特征和组合展开，研究工作区则组织公式依赖与来源。各项实验保留自己的输入、规则和结果，便于分别复盘。</p><h2>我做了什么</h2><ul><li>在零依赖离线 PWA 中组织委托、手续费、滑点、回撤与复盘功能。</li><li>开展机器学习因子、多因子选股和期货趋势策略研究，构建数据、特征与回测流程。</li><li>在研究工作区整理公式依赖、来源追溯、Schema 与测试。</li></ul><h2>做出的成果</h2><ul><li>构建日频 OHLCV、20+ 个特征、模型比较与多空组合回测流程。</li><li>在趋势策略研究中纳入均线、ATR 仓位、止损、交易成本与参数敏感性检查。</li><li>实现用于委托、手续费、滑点和回撤复盘的离线 PWA。</li></ul><h2>实现过程</h2><ol><li>来源与研究假设</li><li>数据清洗和特征</li><li>模型或交易规则</li><li>计入交易成本</li><li>风险与回测复盘</li></ol><h2>设计取舍与收获</h2><p>我把交易成本、时间划分和参数敏感性放进研究流程，用同一套规则检查想法在不同设置下如何变化。</p><p><a href="https://github.com/skeleton2024/market-replay-lab" rel="noopener noreferrer">market-replay-lab</a></p><p><a href="https://github.com/skeleton2024/arbitrage-research-lab" rel="noopener noreferrer">arbitrage-research-lab</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>市场里的规则与代价 · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>市场里的规则与代价</h1><p>市场研究专题</p><p>围绕市场机制与策略研究积累的一组项目：离线交易练习、机器学习因子、多因子选股、期货趋势策略，以及研究资料与公式管理。</p><p><a href="/project-notes/market-lab.md" download>下载项目介绍</a></p><h2>一个交易想法经过数据、成本和风险检查后，还剩下什么？</h2><p>这些项目从不同角度研究市场：离线 PWA 用于练习委托和成本，多因子与趋势研究围绕数据、特征和组合展开，研究工作区则组织公式依赖与来源。各项实验保留自己的输入、规则和结果，便于分别复盘。</p><h2>我做了什么</h2><ul><li>在零依赖离线 PWA 中组织委托、手续费、滑点、回撤与复盘功能。</li><li>开展机器学习因子、多因子选股和期货趋势策略研究，构建数据、特征与回测流程。</li><li>在研究工作区整理公式依赖、来源追溯、Schema 与测试。</li></ul><h2>做出的成果</h2><ul><li>构建日频 OHLCV、20+ 个特征、模型比较与多空组合回测流程。</li><li>在趋势策略研究中纳入均线、ATR 仓位、止损、交易成本与参数敏感性检查。</li><li>实现用于委托、手续费、滑点和回撤复盘的离线 PWA。</li></ul><h2>实现过程</h2><ol><li>来源与研究假设</li><li>数据清洗和特征</li><li>模型或交易规则</li><li>计入交易成本</li><li>风险与回测复盘</li></ol><h2>设计取舍与收获</h2><p>我把交易成本、时间划分和参数敏感性放进研究流程，用同一套规则检查想法在不同设置下如何变化。</p><p><a href="https://github.com/skeleton2024/market-replay-lab" rel="noopener noreferrer">market-replay-lab</a></p><p><a href="https://github.com/skeleton2024/arbitrage-research-lab" rel="noopener noreferrer">arbitrage-research-lab</a></p></main></div>
+</body>
+</html>

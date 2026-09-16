@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>盘口实验室 · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>盘口实验室</h1><p>离线 PWA · 合成行情</p><p>在手机上逐步回放隐藏行情，把委托、规则、手续费与滑点放进一次可复盘的交易练习。</p><p><a href="/project-notes/market-replay.md" download>下载项目介绍</a></p><h2>当执行时点和成本都算进去，一次交易会怎样变化？</h2><p>一次交易练习如果提前看到了后面的行情，或者省略了成本，反馈就很难解释。我把合成行情逐根展开，让手动委托和规则信号都在下一根 K 线开盘成交，再记录手续费、滑点、持仓和权益。界面围绕手机操作组织，练习结束后能沿成交记录复盘，也能从本地存档继续。</p><h2>我做了什么</h2><ul><li>实现确定性行情生成、下一根 K 线开盘成交、持仓和成本计算。</li><li>制作手机界面、本地存档和离线缓存，将规则和手动交易接入同一引擎。</li></ul><h2>做出的成果</h2><ul><li>提供零依赖静态应用，支持本地 HTTP 运行和 PWA 缓存。</li><li>成交、成本与回撤引擎测试通过，浏览器入口已检查。</li></ul><h2>实现过程</h2><ol><li>隐藏身份的合成行情</li><li>下达委托或启用规则</li><li>下一根开盘成交</li><li>记录费用与权益</li><li>结束后查看复盘</li></ol><h2>设计取舍与收获</h2><p>交易练习的反馈需要包含成本和执行时点。统一手动委托与规则信号的成交语义，复盘才能放在同一尺度上。</p><p><a href="https://github.com/skeleton2024/market-replay-lab" rel="noopener noreferrer">源码与复现</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>盘口实验室 · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>盘口实验室</h1><p>离线 PWA · 合成行情</p><p>在手机上逐步回放隐藏行情，把委托、规则、手续费与滑点放进一次可复盘的交易练习。</p><p><a href="/project-notes/market-replay.md" download>下载项目介绍</a></p><h2>当执行时点和成本都算进去，一次交易会怎样变化？</h2><p>一次交易练习如果提前看到了后面的行情，或者省略了成本，反馈就很难解释。我把合成行情逐根展开，让手动委托和规则信号都在下一根 K 线开盘成交，再记录手续费、滑点、持仓和权益。界面围绕手机操作组织，练习结束后能沿成交记录复盘，也能从本地存档继续。</p><h2>我做了什么</h2><ul><li>实现确定性行情生成、下一根 K 线开盘成交、持仓和成本计算。</li><li>制作手机界面、本地存档和离线缓存，将规则和手动交易接入同一引擎。</li></ul><h2>做出的成果</h2><ul><li>提供零依赖静态应用，支持本地 HTTP 运行和 PWA 缓存。</li><li>成交、成本与回撤引擎测试通过，浏览器入口已检查。</li></ul><h2>实现过程</h2><ol><li>隐藏身份的合成行情</li><li>下达委托或启用规则</li><li>下一根开盘成交</li><li>记录费用与权益</li><li>结束后查看复盘</li></ol><h2>设计取舍与收获</h2><p>交易练习的反馈需要包含成本和执行时点。统一手动委托与规则信号的成交语义，复盘才能放在同一尺度上。</p><p><a href="https://github.com/skeleton2024/market-replay-lab" rel="noopener noreferrer">源码与复现</a></p></main></div>
+</body>
+</html>

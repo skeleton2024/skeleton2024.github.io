@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>在内容与用户之间 · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>在内容与用户之间</h1><p>内容与社区实践</p><p>在宠物电商 MCN、数字人内容制作与 NTX DAO 社区实践中，参与选题、素材、发布、回复和咨询跟进，观察内容如何影响用户理解与反馈。</p><p><a href="/project-notes/content-operations.md" download>下载项目介绍</a></p><h2>用户的咨询和反馈，怎样回到下一次内容制作？</h2><p>在宠物电商 MCN，我参与选题、素材、发布和咨询跟进；在数字人实践中处理商品内容、声音与口形；在 NTX DAO 协助中文 X 和 Discord 的日常维护。这些经历让我能从制作和反馈两端理解内容工作。</p><h2>我做了什么</h2><ul><li>在宠物电商 MCN 参与小红书 / 抖音选题、素材、发布、回复与用户咨询跟进。</li><li>短期参与数字人商品内容制作，处理声音克隆与口形对齐。</li><li>在 NTX DAO 辅助日常运营，协助维护中文 X 账号和 Discord 社群。</li></ul><h2>做出的成果</h2><ul><li>记录用户常见问题，用于选题、商品信息和转化复盘。</li><li>宠物商品反馈与供应链动作之间的断点，成为后续 VOC-BOM 原型的场景起点。</li></ul><h2>实现过程</h2><ol><li>选题与用户问题</li><li>脚本和素材</li><li>制作、发布与回复</li><li>记录咨询与评论</li><li>内容与商品信息复盘</li></ol><h2>设计取舍与收获</h2><p>咨询和评论暴露出用户真正关心的问题。我把这些问题带回选题和商品说明，也由此开始思考反馈如何变成产品改进。</p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>在内容与用户之间 · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>在内容与用户之间</h1><p>内容与社区实践</p><p>在宠物电商 MCN、数字人内容制作与 NTX DAO 社区实践中，参与选题、素材、发布、回复和咨询跟进，观察内容如何影响用户理解与反馈。</p><p><a href="/project-notes/content-operations.md" download>下载项目介绍</a></p><h2>用户的咨询和反馈，怎样回到下一次内容制作？</h2><p>在宠物电商 MCN，我参与选题、素材、发布和咨询跟进；在数字人实践中处理商品内容、声音与口形；在 NTX DAO 协助中文 X 和 Discord 的日常维护。这些经历让我能从制作和反馈两端理解内容工作。</p><h2>我做了什么</h2><ul><li>在宠物电商 MCN 参与小红书 / 抖音选题、素材、发布、回复与用户咨询跟进。</li><li>短期参与数字人商品内容制作，处理声音克隆与口形对齐。</li><li>在 NTX DAO 辅助日常运营，协助维护中文 X 账号和 Discord 社群。</li></ul><h2>做出的成果</h2><ul><li>记录用户常见问题，用于选题、商品信息和转化复盘。</li><li>宠物商品反馈与供应链动作之间的断点，成为后续 VOC-BOM 原型的场景起点。</li></ul><h2>实现过程</h2><ol><li>选题与用户问题</li><li>脚本和素材</li><li>制作、发布与回复</li><li>记录咨询与评论</li><li>内容与商品信息复盘</li></ol><h2>设计取舍与收获</h2><p>咨询和评论暴露出用户真正关心的问题。我把这些问题带回选题和商品说明，也由此开始思考反馈如何变成产品改进。</p></main></div>
+</body>
+</html>

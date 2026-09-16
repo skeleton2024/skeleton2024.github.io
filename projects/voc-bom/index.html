@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>Pet VOC → BOM · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>Pet VOC → BOM</h1><p>规则工作流原型 · 模拟评论</p><p>把“牵引绳断了”这类宠物商品反馈整理为产品改进工单。这个 Streamlit 原型使用模拟评论，串起缺陷识别、根因假设、材料建议与人工审批。</p><p><a href="/project-notes/voc-bom.md" download>下载项目介绍</a></p><h2>一条差评，怎样变成可讨论的工程问题？</h2><p>宠物电商实践让我注意到，用户说出的故障与供应链需要的工单信息之间存在距离。我以模拟评论建立示例，把原话映射到缺陷类型和根因假设，再生成可编辑的材料建议，让人工审阅始终能看见原始上下文。</p><h2>我做了什么</h2><ul><li>设计供应链分析 Prompt 与结构化工单 Schema。</li><li>制作 Streamlit 界面，对照原评论与分析结果，支持编辑、确认和下载工单草稿。</li></ul><h2>做出的成果</h2><ul><li>实现评论与工单对照界面，支持编辑改进建议、确认草稿并下载。</li><li>将缺陷类型、失效模式、根因假设与 BOM 建议写入统一结构，交由人工确认。</li></ul><h2>实现过程</h2><ol><li>读取本地模拟评论</li><li>识别缺陷与失效模式</li><li>提出根因假设</li><li>生成可编辑 BOM 工单</li><li>人工审批并保留邮件草稿</li></ol><h2>设计取舍与收获</h2><p>客服语言和工程语言之间有一段翻译工作。我保留原评论和根因假设，让审阅者能沿着同一条线检查建议。</p><p><a href="https://github.com/skeleton2024/tiktok-pet-voc-bom" rel="noopener noreferrer">源码与使用说明</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>Pet VOC → BOM · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>Pet VOC → BOM</h1><p>规则工作流原型 · 模拟评论</p><p>把“牵引绳断了”这类宠物商品反馈整理为产品改进工单。这个 Streamlit 原型使用模拟评论，串起缺陷识别、根因假设、材料建议与人工审批。</p><p><a href="/project-notes/voc-bom.md" download>下载项目介绍</a></p><h2>一条差评，怎样变成可讨论的工程问题？</h2><p>宠物电商实践让我注意到，用户说出的故障与供应链需要的工单信息之间存在距离。我以模拟评论建立示例，把原话映射到缺陷类型和根因假设，再生成可编辑的材料建议，让人工审阅始终能看见原始上下文。</p><h2>我做了什么</h2><ul><li>设计供应链分析 Prompt 与结构化工单 Schema。</li><li>制作 Streamlit 界面，对照原评论与分析结果，支持编辑、确认和下载工单草稿。</li></ul><h2>做出的成果</h2><ul><li>实现评论与工单对照界面，支持编辑改进建议、确认草稿并下载。</li><li>将缺陷类型、失效模式、根因假设与 BOM 建议写入统一结构，交由人工确认。</li></ul><h2>实现过程</h2><ol><li>读取本地模拟评论</li><li>识别缺陷与失效模式</li><li>提出根因假设</li><li>生成可编辑 BOM 工单</li><li>人工审批并保留邮件草稿</li></ol><h2>设计取舍与收获</h2><p>客服语言和工程语言之间有一段翻译工作。我保留原评论和根因假设，让审阅者能沿着同一条线检查建议。</p><p><a href="https://github.com/skeleton2024/tiktok-pet-voc-bom" rel="noopener noreferrer">源码与使用说明</a></p></main></div>
+</body>
+</html>

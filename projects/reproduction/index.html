@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>EEG 睡眠分期与 sRNAdeep 复现 · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>EEG 睡眠分期与 sRNAdeep 复现</h1><p>研究复现专题</p><p>两项围绕实验复现的实践：在 Sleep-EDF 上完成 EEG 睡眠分期课程项目，并对 sRNAdeep 公开材料进行双轨实现和稳健性复查。</p><p><a href="/project-notes/reproduction.md" download>下载项目介绍</a></p><h2>怎样把一次实验变成可以重新运行的研究记录？</h2><p>Sleep-EDF 课程项目采用按受试者划分数据的方式，整理代码、结果表和课程报告；sRNAdeep 复现则围绕公开材料建立双轨实现，比较多种子、多折运行。两项实践都把实验设置和运行记录作为交付的一部分。</p><h2>我做了什么</h2><ul><li>参与 Sleep-EDF EEG 睡眠分期课程项目，采用按受试者划分数据的方式。</li><li>完成 sRNAdeep 公开材料的双轨实现，保留多种子、多折结果及运行证据。</li></ul><h2>做出的成果</h2><ul><li>Sleep-EDF 项目覆盖 20 名受试者、20,626 个 epoch，完成代码、结果表与课程报告。</li><li>sRNAdeep 保留多种子、多折结果，以及日志、哈希与复现报告。</li></ul><h2>实现过程</h2><ol><li>明确公开材料版本</li><li>数据划分与实现</li><li>多种子 / 多折运行</li><li>记录日志与哈希</li><li>稳健性复查</li></ol><h2>设计取舍与收获</h2><p>我把数据划分、版本、随机种子和运行记录纳入实验交付，使结果差异可以回到具体设置继续追查。</p><p><a href="https://github.com/skeleton2024/sleep-edf-study" rel="noopener noreferrer">sleep-edf-study</a></p><p><a href="https://github.com/skeleton2024/srnadeep-reproduction" rel="noopener noreferrer">srnadeep-reproduction</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>EEG 睡眠分期与 sRNAdeep 复现 · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>EEG 睡眠分期与 sRNAdeep 复现</h1><p>研究复现专题</p><p>两项围绕实验复现的实践：在 Sleep-EDF 上完成 EEG 睡眠分期课程项目，并对 sRNAdeep 公开材料进行双轨实现和稳健性复查。</p><p><a href="/project-notes/reproduction.md" download>下载项目介绍</a></p><h2>怎样把一次实验变成可以重新运行的研究记录？</h2><p>Sleep-EDF 课程项目采用按受试者划分数据的方式，整理代码、结果表和课程报告；sRNAdeep 复现则围绕公开材料建立双轨实现，比较多种子、多折运行。两项实践都把实验设置和运行记录作为交付的一部分。</p><h2>我做了什么</h2><ul><li>参与 Sleep-EDF EEG 睡眠分期课程项目，采用按受试者划分数据的方式。</li><li>完成 sRNAdeep 公开材料的双轨实现，保留多种子、多折结果及运行证据。</li></ul><h2>做出的成果</h2><ul><li>Sleep-EDF 项目覆盖 20 名受试者、20,626 个 epoch，完成代码、结果表与课程报告。</li><li>sRNAdeep 保留多种子、多折结果，以及日志、哈希与复现报告。</li></ul><h2>实现过程</h2><ol><li>明确公开材料版本</li><li>数据划分与实现</li><li>多种子 / 多折运行</li><li>记录日志与哈希</li><li>稳健性复查</li></ol><h2>设计取舍与收获</h2><p>我把数据划分、版本、随机种子和运行记录纳入实验交付，使结果差异可以回到具体设置继续追查。</p><p><a href="https://github.com/skeleton2024/sleep-edf-study" rel="noopener noreferrer">sleep-edf-study</a></p><p><a href="https://github.com/skeleton2024/srnadeep-reproduction" rel="noopener noreferrer">srnadeep-reproduction</a></p></main></div>
+</body>
+</html>

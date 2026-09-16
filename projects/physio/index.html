@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>读懂身体的压力信号 · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>读懂身体的压力信号</h1><p>研究原型</p><p>基于 WESAD 的 ECG、EDA、呼吸与温度数据，完成压力识别、跨受试者验证和 LabVIEW 推理集成。项目覆盖从信号处理到仪器接口的完整研究流程。</p><p><a href="/project-notes/physio.md" download>下载项目介绍</a></p><h2>模型遇到没见过的人，表现还成立吗？</h2><p>我将多模态生理信号切成 60 秒窗口，以 30 秒步长提取 37 维特征，并比较多种分类模型。评估采用留一受试者验证，让每轮测试面对未参与训练的人；随后把选定模型封装为 LabVIEW 可以调用的推理接口。</p><h2>我做了什么</h2><ul><li>完成预处理、切窗、37 维特征、模型比较与留一受试者验证。</li><li>整理推理封装与 LabVIEW 接口，回查错误样本与数据划分。</li></ul><h2>做出的成果</h2><ul><li>在 15 名受试者、883 个有效窗口上完成留一受试者验证，提取 37 维生理特征。</li><li>XGBoost 的 Accuracy 为 0.930、Macro F1 为 0.921；用于 LabVIEW 集成的 Random Forest 分别为 0.923、0.914。</li></ul><h2>实现过程</h2><ol><li>ECG / EDA / 呼吸 / 温度</li><li>预处理与切窗</li><li>37 维手工特征</li><li>留一受试者验证</li><li>模型选择与 LabVIEW 接口</li></ol><h2>设计取舍与收获</h2><p>我用留一受试者验证考察模型面对新个体的表现，并选择 Random Forest 平衡识别效果、稳定性与仪器集成成本。</p><p><a href="https://github.com/skeleton2024/multimodal-physio-stress-recognition" rel="noopener noreferrer">源码与使用说明</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>读懂身体的压力信号 · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>读懂身体的压力信号</h1><p>研究原型</p><p>基于 WESAD 的 ECG、EDA、呼吸与温度数据，完成压力识别、跨受试者验证和 LabVIEW 推理集成。项目覆盖从信号处理到仪器接口的完整研究流程。</p><p><a href="/project-notes/physio.md" download>下载项目介绍</a></p><h2>模型遇到没见过的人，表现还成立吗？</h2><p>我将多模态生理信号切成 60 秒窗口，以 30 秒步长提取 37 维特征，并比较多种分类模型。评估采用留一受试者验证，让每轮测试面对未参与训练的人；随后把选定模型封装为 LabVIEW 可以调用的推理接口。</p><h2>我做了什么</h2><ul><li>完成预处理、切窗、37 维特征、模型比较与留一受试者验证。</li><li>整理推理封装与 LabVIEW 接口，回查错误样本与数据划分。</li></ul><h2>做出的成果</h2><ul><li>在 15 名受试者、883 个有效窗口上完成留一受试者验证，提取 37 维生理特征。</li><li>XGBoost 的 Accuracy 为 0.930、Macro F1 为 0.921；用于 LabVIEW 集成的 Random Forest 分别为 0.923、0.914。</li></ul><h2>实现过程</h2><ol><li>ECG / EDA / 呼吸 / 温度</li><li>预处理与切窗</li><li>37 维手工特征</li><li>留一受试者验证</li><li>模型选择与 LabVIEW 接口</li></ol><h2>设计取舍与收获</h2><p>我用留一受试者验证考察模型面对新个体的表现，并选择 Random Forest 平衡识别效果、稳定性与仪器集成成本。</p><p><a href="https://github.com/skeleton2024/multimodal-physio-stress-recognition" rel="noopener noreferrer">源码与使用说明</a></p></main></div>
+</body>
+</html>

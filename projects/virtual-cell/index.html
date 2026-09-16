@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>Virtual Cell Experiment Triage · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>Virtual Cell Experiment Triage</h1><p>工作流 Demo · 示例数据</p><p>面向细胞扰动研究的实验优先级工作台。导入候选与目标状态后，集中查看排序依据、风险和首轮验证面板，帮助组织下一步实验。</p><p><a href="/project-notes/virtual-cell.md" download>下载项目介绍</a></p><h2>有限的实验资源，先放在哪些候选上？</h2><p>我把“先做哪些扰动实验”拆成一组可操作的信息：候选、目标状态、排序依据、风险与验证面板。原型支持 CSV 导入和小型示例，加入留一扰动检查及随机基线，让研究者可以把排序放到对照中阅读。</p><h2>我做了什么</h2><ul><li>设计候选扰动、目标状态、评分依据与验证面板的信息结构。</li><li>实现 Streamlit 界面和 CSV 导入，加入留一扰动检查与随机基线对照。</li></ul><h2>做出的成果</h2><ul><li>完成可运行的工作流 Demo，支持示例输入、候选排序与解释查看。</li><li>把首轮候选与下一轮验证建议组织到同一界面。</li></ul><h2>实现过程</h2><ol><li>输入状态、目标与候选</li><li>读取 response / state CSV</li><li>已知签名对齐或近邻估计</li><li>候选排序与解释</li><li>验证面板与下一轮建议</li></ol><h2>设计取舍与收获</h2><p>排序需要回答为什么排在前面、如何验证这两个问题。我把解释和验证面板放在排名旁边，方便研究者继续判断。</p><p><a href="https://github.com/skeleton2024/virtual-cell-triage" rel="noopener noreferrer">源码与使用说明</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>Virtual Cell Experiment Triage · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>Virtual Cell Experiment Triage</h1><p>工作流 Demo · 示例数据</p><p>面向细胞扰动研究的实验优先级工作台。导入候选与目标状态后，集中查看排序依据、风险和首轮验证面板，帮助组织下一步实验。</p><p><a href="/project-notes/virtual-cell.md" download>下载项目介绍</a></p><h2>有限的实验资源，先放在哪些候选上？</h2><p>我把“先做哪些扰动实验”拆成一组可操作的信息：候选、目标状态、排序依据、风险与验证面板。原型支持 CSV 导入和小型示例，加入留一扰动检查及随机基线，让研究者可以把排序放到对照中阅读。</p><h2>我做了什么</h2><ul><li>设计候选扰动、目标状态、评分依据与验证面板的信息结构。</li><li>实现 Streamlit 界面和 CSV 导入，加入留一扰动检查与随机基线对照。</li></ul><h2>做出的成果</h2><ul><li>完成可运行的工作流 Demo，支持示例输入、候选排序与解释查看。</li><li>把首轮候选与下一轮验证建议组织到同一界面。</li></ul><h2>实现过程</h2><ol><li>输入状态、目标与候选</li><li>读取 response / state CSV</li><li>已知签名对齐或近邻估计</li><li>候选排序与解释</li><li>验证面板与下一轮建议</li></ol><h2>设计取舍与收获</h2><p>排序需要回答为什么排在前面、如何验证这两个问题。我把解释和验证面板放在排名旁边，方便研究者继续判断。</p><p><a href="https://github.com/skeleton2024/virtual-cell-triage" rel="noopener noreferrer">源码与使用说明</a></p></main></div>
+</body>
+</html>

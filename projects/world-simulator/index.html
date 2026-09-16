@@ -1,7 +1,74 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#d8e0cf"/><meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/><title>成固县小社会模拟器 · skeleton 的花园</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>  <script type="module" crossorigin src="/assets/index-BwkIVPyW.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/three-8bHLiiKS.js">
-  <link rel="modulepreload" crossorigin href="/assets/react-CWunD31Z.js">
-  <link rel="modulepreload" crossorigin href="/assets/physics-BHR2wfz5.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-CLSITpLc.css">
-</head><body><div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>成固县小社会模拟器</h1><p>早期原型</p><p>一个围绕长期状态构建的 AI 社会模拟原型。人物的身体、家庭、关系与任务会随着行动持续变化，Web、CLI 和 HTTP API 共用同一套世界状态。</p><p><a href="/project-notes/world-simulator.md" download>下载项目介绍</a></p><h2>一次行动，能在世界里留下什么？</h2><p>人物身体、家庭、关系网络和长期任务共同组成持续状态。规则兜底与可选 AI 裁判解释行动如何改变状态，让 Web、CLI 与 HTTP API 使用同一套世界。</p><h2>我做了什么</h2><ul><li>建模人物、家庭、地点、关系图与任务线程。</li><li>组织规则兜底与可选 AI 裁判，将状态、行动和结果写入同一循环。</li></ul><h2>做出的成果</h2><ul><li>形成 Web、CLI、HTTP API 共用状态的早期可演示原型。</li><li>公开可直接运行的源码，支持本地规则兜底、存档和行动记录。</li></ul><h2>实现过程</h2><ol><li>人物、家庭与地点</li><li>接收玩家行动</li><li>规则与可选 AI 裁判</li><li>更新关系和任务线程</li><li>保存长期世界状态</li></ol><h2>设计取舍与收获</h2><p>我将世界状态与界面分开，把行动造成的变化写入记录。这样无论从哪个入口进入，都能接着同一个世界继续。</p><p><a href="https://github.com/skeleton2024/game" rel="noopener noreferrer">源码与使用说明</a></p></main></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#d8e0cf"/>
+  <meta name="description" content="开着小车，探索陈飞扬的 AI 产品、科研工具与模拟世界。"/>
+  <title>成固县小社会模拟器 · skeleton 的花园</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <style>
+    #garden-boot{position:relative;z-index:100;padding:20px 24px;background:#263d31;color:#faf7ed;font:14px/1.7 system-ui,sans-serif}
+    #garden-boot[hidden]{display:none}
+    #garden-boot p{margin:0 0 8px}#garden-boot strong{font-size:18px}
+    #garden-boot button{padding:9px 16px;border:1px solid #b4c5a9;border-radius:24px;background:#faf7ed;color:#263d31;cursor:pointer;font:inherit}
+    #garden-boot details{margin-top:12px;font-size:12px}#garden-boot pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  </style>
+  <script>
+    // This classic script must work even when the application module cannot load.
+    (function () {
+      var mounted = false, failure = '', timer;
+      function show(message) {
+        var panel = document.getElementById('garden-boot');
+        if (!panel || mounted) return;
+        panel.hidden = false;
+        document.getElementById('garden-boot-message').textContent = message;
+        document.getElementById('garden-boot-detail').textContent = '版本：2026-09-16.2\n' + (failure || '等待互动页面启动') + '\n' + navigator.userAgent;
+      }
+      window.addEventListener('error', function (event) {
+        if (mounted) return;
+        var target = event.target;
+        if (target && target.tagName === 'SCRIPT') failure = '脚本下载失败：' + target.src;
+        else if (event.message) failure = event.message;
+        else return;
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      }, true);
+      window.addEventListener('unhandledrejection', function (event) {
+        if (mounted) return;
+        failure = String(event.reason && event.reason.message || event.reason || '启动失败');
+        show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      window.addEventListener('garden:app-ready', function () {
+        mounted = true;
+        clearTimeout(timer);
+        var panel = document.getElementById('garden-boot');
+        if (panel) panel.hidden = true;
+      });
+      document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'garden-boot-retry') {
+          var url = new URL(location.href);
+          url.searchParams.set('reload', String(Date.now()));
+          location.replace(url.href);
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        if (failure) show('互动花园暂时未能打开。请重试，或先浏览下方作品。');
+      });
+      // A pending module download also delays DOMContentLoaded.
+      timer = setTimeout(function () { show('花园还在加载。你可以继续等待、重新加载，或先浏览下方作品。'); }, 8000);
+    }());
+  </script>
+  <script type="module" crossorigin src="/assets/index-DpasaeeI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5Q5i5Wb.css">
+</head>
+<body>
+  <aside id="garden-boot" hidden aria-live="polite">
+    <p><strong>skeleton 的花园</strong></p>
+    <p id="garden-boot-message"></p>
+    <button id="garden-boot-retry" type="button">重新加载花园</button>
+    <details><summary>查看加载信息</summary><pre id="garden-boot-detail"></pre></details>
+  </aside>
+  <noscript><p>开启浏览器的 JavaScript 后就能进入互动花园，也可以直接阅读下方作品。</p></noscript>
+  <div id="root"><main class="static-content"><a href="/">skeleton 的花园</a><p><a href="/projects/">全部作品</a></p><h1>成固县小社会模拟器</h1><p>早期原型</p><p>一个围绕长期状态构建的 AI 社会模拟原型。人物的身体、家庭、关系与任务会随着行动持续变化，Web、CLI 和 HTTP API 共用同一套世界状态。</p><p><a href="/project-notes/world-simulator.md" download>下载项目介绍</a></p><h2>一次行动，能在世界里留下什么？</h2><p>人物身体、家庭、关系网络和长期任务共同组成持续状态。规则兜底与可选 AI 裁判解释行动如何改变状态，让 Web、CLI 与 HTTP API 使用同一套世界。</p><h2>我做了什么</h2><ul><li>建模人物、家庭、地点、关系图与任务线程。</li><li>组织规则兜底与可选 AI 裁判，将状态、行动和结果写入同一循环。</li></ul><h2>做出的成果</h2><ul><li>形成 Web、CLI、HTTP API 共用状态的早期可演示原型。</li><li>公开可直接运行的源码，支持本地规则兜底、存档和行动记录。</li></ul><h2>实现过程</h2><ol><li>人物、家庭与地点</li><li>接收玩家行动</li><li>规则与可选 AI 裁判</li><li>更新关系和任务线程</li><li>保存长期世界状态</li></ol><h2>设计取舍与收获</h2><p>我将世界状态与界面分开，把行动造成的变化写入记录。这样无论从哪个入口进入，都能接着同一个世界继续。</p><p><a href="https://github.com/skeleton2024/game" rel="noopener noreferrer">源码与使用说明</a></p></main></div>
+</body>
+</html>
